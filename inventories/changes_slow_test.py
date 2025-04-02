@@ -1,51 +1,18 @@
-#!/usr/bin/env python3
-# -*- coding: utf-8 -*-
 import json
-import time
 
-from datetime import datetime
+# Generowanie listy hostów z podanych podsieci
+hosts = [f"10.10.24.{i}" for i in range(1, 255)] + [f"10.10.25.{i}" for i in range(1, 255)]
 
-# Same as the changes script, but has a delay to test race conditions
-
-
-time_val = datetime.utcnow().strftime('%Y_%m_%d_%H_%M_%S.%f')
-
-moover = "moover-{}".format(time_val)
-
-time.sleep(5)
-
-print(json.dumps({
-    "_meta": {
-        "hostvars": {
-            "change_of_vars": {
-                "static_key": "host_dynamic_{}".format(time_val),
-                "dynamic_{}".format(time_val): "host_static_value"
-            },
-            moover: {
-                "static_var": "static_value"
-            }
-        }
-    },
+# Struktura dynamicznego inwentarza Ansible
+inventory = {
     "all": {
+        "hosts": hosts,
         "vars": {
-            "static_inventory_key": "inventory_dynamic_{}".format(time_val),
-            "dynamic_{}".format(time_val): "inventory_static_value"
+            "ansible_user": "your_user",
+            "ansible_ssh_private_key_file": "~/.ssh/id_rsa"
         }
-    },
-    "group_with_moover": {
-        "hosts": ["change_of_vars", moover]
-    },
-    "group_with_vars": {
-        "hosts": ["change_of_vars"],
-        "vars": {
-            "static_group_key": "group_dynamic_{}".format(time_val),
-            "dynamic_group_{}".format(time_val): "group_static_value"
-        }
-    },
-    "ungrouped": {
-        "hosts": [
-            moover,
-            "change_of_vars"
-        ]
     }
-}))
+}
+
+# Wydrukowanie inwentarza w formacie JSON
+print(json.dumps(inventory, indent=4))
