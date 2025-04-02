@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 import json
 
 # Generowanie listy hostów z podanych podsieci
