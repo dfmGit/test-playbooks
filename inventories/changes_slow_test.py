@@ -12,6 +12,9 @@ inventory = {
             "ansible_user": "your_user",
             "ansible_ssh_private_key_file": "~/.ssh/id_rsa"
         }
+    },
+    "montownia": {
+        "hosts": hosts
     }
 }
 
